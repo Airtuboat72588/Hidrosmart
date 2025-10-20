@@ -61,7 +61,9 @@ class Zona:
             self.temperatura_actual = self.sensor.temperature()
             print(f"Zona '{self.nombre}': Humedad={self.humedad_actual:.1f}%, Temp={self.temperatura_actual:.1f}°C")
         except Exception as e:
-            print(f"Error al leer sensor en Zona '{self.nombre}': {e}")
+            self.humedad_actual = 50
+            self.temperatura_actual = 10
+            print(f"Error al leer sensor en Zona '{self.nombre}': {e} , se usa configuración manual: Zona '{self.nombre}': Humedad={self.humedad_actual:.1f}%, Temp={self.temperatura_actual:.1f}°C ")
 
     def verificar_logica_riego(self, hora_actual, dia_del_ano):
         """Aplica todas las reglas de los requerimientos para decidir si regar."""
