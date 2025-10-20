@@ -131,7 +131,7 @@ def obtener_probabilidad_lluvia():
         respuesta = urequests.get(URL_CLIMA)
         datos = respuesta.json()
         respuesta.close()
-        pop_hoy = datos.get('daily', [])[0].get('pop', 0) * 100
+        pop_hoy = datos.get('list', [])[0].get('pop', 0) * 100
         print(f"Probabilidad de lluvia para hoy: {pop_hoy:.1f}%")
         return pop_hoy
     except Exception as e:
