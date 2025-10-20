@@ -18,7 +18,7 @@ WIFI_PASSWORD = ""
 CLAVE_API_CLIMA = ""
 LATITUD = "10.012415"
 LONGITUD = "-84.027928"
-URL_CLIMA = f"https://api.openweathermap.org/data/2.5/onecall?lat={LATITUD}&lon={LONGITUD}&exclude=current,minutely,hourly,alerts&appid={CLAVE_API_CLIMA}&units=metric&lang=es"
+URL_CLIMA = f"https://api.openweathermap.org/data/2.5/forecast?lat={LATITUD}&lon={LONGITUD}&appid={CLAVE_API_CLIMA}&units=metric&lang=es"
 
 # --- CONFIGURACIÓN DE PINES ---
 PIN_VALVULA = machine.Pin(16, machine.Pin.OUT)
