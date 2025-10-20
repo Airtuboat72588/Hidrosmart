@@ -176,7 +176,7 @@ while True:
         ultimo_chequeo_clima_dia = dia_actual_del_ano
 
     if probabilidad_lluvia_hoy > 70:
-        print(f"ADVERTENCIA: Probabilidad de lluvia alta. Riego suspendido hoy.")
+        print(f"ADVERTENCIA: Probabilidad de lluvia alta. Riego suspendido hoy. Comprobación en 1 hora.")
         PIN_VALVULA.value(0)
         time.sleep(3600)
         continue
