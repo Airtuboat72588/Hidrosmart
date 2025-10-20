@@ -1,6 +1,4 @@
-# main.py - Sistema de Riego Inteligente Hidrosmart (Versión Online/Offline)
-# Autor: Gemini
-# Basado en los requerimientos de la Tarea Extraclase #2
+
 
 import machine
 import dht
@@ -8,13 +6,14 @@ import time
 import network
 import urequests
 import ntptime
+import utime
 
 # --- CONFIGURACIÓN PRINCIPAL ---
 # Cambia a False para usar el modo sin internet y configurar la hora manualmente
 USAR_INTERNET = False
 
 # --- CONFIGURACIÓN GENERAL (SOLO PARA MODO ONLINE) ---
-WIFI_SSID = "Wokwi-GUEST"
+WIFI_SSID = ""
 WIFI_PASSWORD = ""
 CLAVE_API_CLIMA = ""
 LATITUD = "10.012415"
@@ -23,6 +22,10 @@ URL_CLIMA = f"https://api.openweathermap.org/data/2.5/onecall?lat={LATITUD}&lon=
 
 # --- CONFIGURACIÓN DE PINES ---
 PIN_VALVULA = machine.Pin(16, machine.Pin.OUT)
+
+
+# --- CONFIGURACIÓN DE ZONA HORARIA ---
+ZONA_HORARIA = -6  # GMT-6 para Costa Rica
 
 # --- CLASES BASADAS EN EL DIAGRAMA UML ---
 class CalendarioRiego:
@@ -91,6 +94,12 @@ def sincronizar_hora_ntp():
     print("Sincronizando hora desde servidor NTP...")
     try:
         ntptime.settime()
+        DESFASE_SEGUNDOS = ZONA_HORARIA * 3600
+        rtc_actual_s = utime.time()
+        rtc_local_s = rtc_actual_s + DESFASE_SEGUNDOS
+        fecha_y_hora_local = utime.localtime(rtc_local_s)
+        rtc = machine.RTC()
+        rtc.datetime((fecha_y_hora_local[0], fecha_y_hora_local[1], fecha_y_hora_local[2], fecha_y_hora_local[6], fecha_y_hora_local[3], fecha_y_hora_local[4], fecha_y_hora_local[5], 0))
         print("Hora sincronizada correctamente.")
     except Exception as e:
         print(f"Error al sincronizar hora: {e}")
@@ -140,9 +149,9 @@ calendario_z1 = CalendarioRiego(hora_inicio=7, hora_fin=8, frecuencia_dias=1)
 calendario_z2 = CalendarioRiego(hora_inicio=21, hora_fin=22, frecuencia_dias=3)
 calendario_z3 = CalendarioRiego(hora_inicio=0, hora_fin=0, frecuencia_dias=0)
 
-zona1 = Zona("Jardín Frontal", 15, 30, 60, calendario_z1)
-zona2 = Zona("Patio Trasero", 14, 25, 55, calendario_z2)
-zona3 = Zona("Patio de Luz", 13, 40, 70, calendario_z3)
+zona1 = Zona("Jardín Frontal", 19, 30, 60, calendario_z1)
+zona2 = Zona("Patio Trasero", 18, 25, 55, calendario_z2)
+zona3 = Zona("Patio de Luz", 17, 40, 70, calendario_z3)
 
 zonas = [zona1, zona2, zona3]
 
